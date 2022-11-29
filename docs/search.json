@@ -1,0 +1,44 @@
+[
+  {
+    "objectID": "about.html",
+    "href": "about.html",
+    "title": "About",
+    "section": "",
+    "text": "Here is some new stuff\n\n1 + 1\n\n[1] 2"
+  },
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "myDigitalAgeWebsite",
+    "section": "",
+    "text": "Hi, I’m Josh abd I am a student from George Washington University."
+  },
+  {
+    "objectID": "index.html#education",
+    "href": "index.html#education",
+    "title": "myDigitalAgeWebsite",
+    "section": "Education",
+    "text": "Education\nGeorge Washington University United Nations International School"
+  },
+  {
+    "objectID": "index.html#work-experience",
+    "href": "index.html#work-experience",
+    "title": "myDigitalAgeWebsite",
+    "section": "Work Experience",
+    "text": "Work Experience\nTBA"
+  },
+  {
+    "objectID": "index.html#skills",
+    "href": "index.html#skills",
+    "title": "myDigitalAgeWebsite",
+    "section": "Skills",
+    "text": "Skills\nPhotography Video Production Reporting and Writing Data Analysis\nTo learn more about Quarto websites visit https://quarto.org/docs/websites."
+  },
+  {
+    "objectID": "portfolio.html",
+    "href": "portfolio.html",
+    "title": "portfolio",
+    "section": "",
+    "text": "Here is some new stuff\n\n1 + 1\n\n[1] 2"
+  }
+]

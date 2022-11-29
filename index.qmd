@@ -1,0 +1,32 @@
+---
+title: "myDigitalAgeWebsite"
+about:
+  template: jolla
+  image: trippy pluto.png
+  links:
+    - icon: twitter
+      text: twitter
+      href: https://twitter.com
+    - icon: github
+      text: Github
+      href: https://github.com/CodePirater
+---
+
+Hi, I'm Josh abd I am a student from George Washington University.
+
+## Education
+George Washington University
+United Nations International School
+
+## Work Experience
+TBA
+
+## Skills
+Photography
+Video Production
+Reporting and Writing
+Data Analysis
+
+
+To learn more about Quarto websites visit <https://quarto.org/docs/websites>.
+
