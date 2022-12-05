@@ -11,7 +11,7 @@
     "href": "index.html",
     "title": "myDigitalAgeWebsite",
     "section": "",
-    "text": "Hi, I’m Josh abd I am a student from George Washington University."
+    "text": "Hi, I’m Josh and I am a student from George Washington University."
   },
   {
     "objectID": "index.html#education",
@@ -32,13 +32,13 @@
     "href": "index.html#skills",
     "title": "myDigitalAgeWebsite",
     "section": "Skills",
-    "text": "Skills\nPhotography Video Production Reporting and Writing Data Analysis\nTo learn more about Quarto websites visit https://quarto.org/docs/websites."
+    "text": "Skills\nPhotography Video Production Reporting and Writing Data Analysis\nhttps://github.com/CodePirater/newwebsite2022.git To learn more about Quarto websites visit https://quarto.org/docs/websites."
   },
   {
     "objectID": "portfolio.html",
     "href": "portfolio.html",
-    "title": "portfolio",
+    "title": "Portfolio",
     "section": "",
-    "text": "Here is some new stuff\n\n1 + 1\n\n[1] 2"
+    "text": "Link to journalistic academic work:\n\nThe Great Oktoberfest - https://joshangelodelatorr.editorx.io/the-great-oktoberfes\nWiener 500 - https://joshangelodelatorr.editorx.io/wiener-500-harvest\nDC Twilight - https://joshangelodelatorr.editorx.io/twilight"
   }
 ]

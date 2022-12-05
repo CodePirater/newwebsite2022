@@ -12,7 +12,7 @@ about:
       href: https://github.com/CodePirater
 ---
 
-Hi, I'm Josh abd I am a student from George Washington University.
+Hi, I'm Josh and I am a student from George Washington University.
 
 ## Education
 George Washington University
@@ -27,6 +27,6 @@ Video Production
 Reporting and Writing
 Data Analysis
 
-
+https://github.com/CodePirater/newwebsite2022.git
 To learn more about Quarto websites visit <https://quarto.org/docs/websites>.
 

@@ -1,10 +1,13 @@
 ---
-title: "portfolio"
+title: "Portfolio"
 ---
 
-About this site
+I Have four years of journalistic reporting education with some experience in photojournalism.
 
-Here is some new stuff
-```{r}
-1 + 1
-```
+Link to journalistic academic work:
+
+1) The Great Oktoberfest - https://joshangelodelatorr.editorx.io/the-great-oktoberfes
+
+2) Wiener 500 - https://joshangelodelatorr.editorx.io/wiener-500-harvest
+
+3) DC Twilight - https://joshangelodelatorr.editorx.io/twilight
