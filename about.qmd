@@ -1,10 +1,33 @@
+
 ---
 title: "About"
+about:
+  template: jolla
+  image: trippy pluto.png
+  links:
+    - icon: twitter
+      text: twitter
+      href: https://twitter.com
+    - icon: github
+      text: Github
+      href: https://github.com/CodePirater
 ---
 
-About this site
+Hi, I'm Josh and I am a student from George Washington University.
 
-Here is some new stuff
-```{r}
-1 + 1
-```
+## Education
+George Washington University
+United Nations International School
+
+## Work Experience
+TBA
+
+## Skills
+Photography
+Video Production
+Reporting and Writing
+Data Analysis
+
+https://github.com/CodePirater/newwebsite2022.git
+To learn more about Quarto websites visit <https://quarto.org/docs/websites>.
+
