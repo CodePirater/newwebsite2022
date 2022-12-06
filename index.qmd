@@ -1,5 +1,5 @@
 ---
 title: "My Digital Age Website Home Page"
 template: jolla
-image: trippy pluto.png
+image: ghost1.tif
 ---

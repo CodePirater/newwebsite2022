@@ -1,0 +1,165 @@
+---
+title: "Analysis Walkthrough"
+author: "Joshua De La Torre"
+format:
+  html:
+    self-contained: true
+    code-fold: true
+    code-tools: true
+---
+
+First we'll load our libraries
+
+```{r}
+library(tidyverse)
+library(lubridate)
+```
+
+
+```{r}
+# run this line below load the data for this assignment
+impeach <- read_csv("https://docs.google.com/spreadsheets/d/e/2PACX-1vRh8d5JaDqBtByzNw2JZF3idaACobDhhk-p7chJoktA0HawELHFOvjQOqCpzGA4MGONvPlR7GASqW-K/pub?gid=1765341510&single=true&output=csv")
+
+# it will load a dataframe called "impeach," containing U.S. House Democrats
+# and whether they supported impeachment along with when they announced such support
+
+# FOR EACH OF THE QUESTIONS BELOW, WRITE YOUR WORKING R CODE TO RETURN THE REQUESTED RESULTS
+# USE COMMENTS (PREFACED BY THE #) TO ACCOMPANY YOUR CODE TO EXPLAIN WHAT YOU'RE DOING 
+# FOR EACH STEP
+
+view(impeach)
+```
+
+
+```{r}
+# 1) The column "for_impeachment" indicates whether the member has publicly called for
+# an impeachment inquiry. Filter to return only the ones where the answer is NO.    
+
+impeach %>% 
+  filter(for_impeachment == "NO") %>%
+  summarise(for_impeachment)
+
+#filtered impeach by results that only showed "No"
+```
+
+
+```{r}
+# 2) Filter to return only results where a member is both against impeachment, and comes from a 
+# district that President Trump won in 2016 (which is noted in the "p16winningparty" column)
+
+impeach %>% 
+  filter(for_impeachment == "YES",
+         p16winningparty == "R")
+#filtered impeach by those who said no to impeaching trump and those who voted trump in 2016
+```
+
+
+```{r}
+# 3) Filter for only results where a member is against impeachment, comes from a 
+# district that President Trump won in 2016 (which is noted in the "p16winningparty" column),
+# and also comes from a district that Mitt Romney won in 2012 ("p12winningparty").
+
+impeach %>% 
+  filter(for_impeachment == "YES",
+         p16winningparty == "R",
+         p12winningparty == "R")
+#filtered impeach by those who said no to impeaching trump and states who voted trump in 2016 and romney in 2012
+```
+
+
+```{r}
+# 4) Filter for only results from September 2019 where a member is a YES for impeachment. 
+
+impeach %>% 
+  filter(for_impeachment == "YES",
+         year(date_exact) == 2019,
+         month(date_approx_month) == 9)
+#filtered impeach for those who voted yes for impeaching trump during the date Semptember 2019 by sorting for the year 2019 and the month September
+```
+
+
+```{r}
+# 5) Filter for only results where a member is a YES for impeachment and is from a district
+# where Clinton won more than 70 percent of the vote in 2016 (found in column "clinton_percent")
+
+impeach %>% 
+  filter(for_impeachment == "YES",
+         p16winningparty == "D",
+         clinton_percent > 70 )
+#filtering for yes vote to impeach and voted for Clinton %
+```
+
+
+```{r}
+# 6) Sort the entire dataframe based on the percentage of a district that has a 
+# bachelor's degree or higher ("pct_bachelors"), from lowest to highest
+
+impeach %>% 
+  arrange(pct_bachelors)
+
+#sorted data frame by putting pct_bachelors inside arrange
+```
+
+
+```{r}
+# 7) Sort the just those who are NO on impeachment based on the percentage of a district that has a 
+# bachelor's degree or higher ("pct_bachelors"), from lowest to highest
+
+impeach %>% 
+  filter(for_impeachment == "NO") %>% 
+  arrange(pct_bachelors)
+
+#filtered by no vote on impeach and arranged pct_bachelors by lowest to highest
+```
+
+
+```{r}
+# 8) Sort the just those who are NO on impeachment based on the percentage of a district that has a 
+# bachelor's degree or higher ("pct_bachelors"), from lowest to highest.
+# Then filter those records by only those whose bachelor's percentage is below the national average (found
+# in the "pct_bachelors_compared_to_national" column).
+
+impeach %>% 
+  filter(for_impeachment == "NO") %>% 
+  arrange(pct_bachelors) %>% 
+  filter(pct_bachelors_compared_to_national == "BELOW" )
+#filtered by no vote on impeach and arranged pct_bachelors by lowest to highest then filtered againt for bachelors degrees lower than national average
+```
+
+
+```{r}
+# 9) Filter for only members from New Jersey who are NO on impeachment
+
+impeach %>% 
+  filter(for_impeachment == "NO") %>% 
+  filter(state == "NJ")
+#filtered for members of congress from New Jersey who voted no to impeachment
+```
+
+
+```{r}
+# 10) Filter for those who were YES on impeachment, with a declared date prior to 2019. So only
+# those with dates before 2019.  Then sort those so that the highest Clinton vote percentages are 
+# at the top.   
+impeach %>% 
+  filter(for_impeachment == "YES",
+         year(date_exact) == 2017,
+         ) %>%
+  arrange(clinton_percent>trump_percent)
+#filtered for members of congress who voted yes to impeachment in 2017
+```
+
+
+```{r}
+# 11) Answer this question with a single numeric answer, and show the R code you
+# used to reach that answer: How many members in the dataset who are holdouts on impeachment
+# come from districts with a GDP below the national figure?
+# Hint: there's a function called nrow() that tells you how many rows are in a dataframe
+
+impeach %>% 
+  filter(gdp_above_national == "BELOW",
+         for_impeachment == "NO") %>% 
+  nrow()
+#I got 19 by filtering impeach by gdp above national below the average and sorting for only those who said no to impeaching trump
+
+```
