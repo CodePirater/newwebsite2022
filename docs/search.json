@@ -1,12 +1,5 @@
 [
   {
-    "objectID": "portfolio.html",
-    "href": "portfolio.html",
-    "title": "Portfolio",
-    "section": "",
-    "text": "Link to journalistic academic work:\n\nThe Great Oktoberfest - https://joshangelodelatorr.editorx.io/the-great-oktoberfes\nWiener 500 - https://joshangelodelatorr.editorx.io/wiener-500-harvest\nDC Twilight - https://joshangelodelatorr.editorx.io/twilight"
-  },
-  {
     "objectID": "about.html",
     "href": "about.html",
     "title": "About",
@@ -33,6 +26,13 @@
     "title": "About",
     "section": "Skills",
     "text": "Skills\nPhotography Video Production Reporting and Writing Data Analysis\nhttps://github.com/CodePirater/newwebsite2022.git To learn more about Quarto websites visit https://quarto.org/docs/websites."
+  },
+  {
+    "objectID": "portfolio.html",
+    "href": "portfolio.html",
+    "title": "Portfolio",
+    "section": "",
+    "text": "Link to journalistic academic work:\n\nThe Great Oktoberfest - https://joshangelodelatorr.editorx.io/the-great-oktoberfes\nWiener 500 - https://joshangelodelatorr.editorx.io/wiener-500-harvest\nDC Twilight - https://joshangelodelatorr.editorx.io/twilight"
   },
   {
     "objectID": "Test Analysis Walkthrough.html",

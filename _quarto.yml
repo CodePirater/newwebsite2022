@@ -9,6 +9,7 @@ website:
         text: Home
       - about.qmd
       - portfolio.qmd
+      - Analysis Walkthrough.qmd
   page-footer: 
     left: "Copyright 2022, Joshua De La Torre" 
     right: 
