@@ -1,5 +1,3 @@
 ---
 title: "My Digital Age Website Home Page"
-template: jolla
-image: ghost1.tif
 ---
