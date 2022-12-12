@@ -23,10 +23,6 @@ impeach <- read_csv("https://docs.google.com/spreadsheets/d/e/2PACX-1vRh8d5JaDqB
 # it will load a dataframe called "impeach," containing U.S. House Democrats
 # and whether they supported impeachment along with when they announced such support
 
-# FOR EACH OF THE QUESTIONS BELOW, WRITE YOUR WORKING R CODE TO RETURN THE REQUESTED RESULTS
-# USE COMMENTS (PREFACED BY THE #) TO ACCOMPANY YOUR CODE TO EXPLAIN WHAT YOU'RE DOING 
-# FOR EACH STEP
-
 view(impeach)
 ```
 
@@ -39,7 +35,7 @@ impeach %>%
   filter(for_impeachment == "NO") %>%
   summarise(for_impeachment)
 
-#filtered impeach by results that only showed "No"
+#filtered impeach by filtering for_impeachment column for results that only showed "No"
 ```
 
 
@@ -50,7 +46,7 @@ impeach %>%
 impeach %>% 
   filter(for_impeachment == "YES",
          p16winningparty == "R")
-#filtered impeach by those who said no to impeaching trump and those who voted trump in 2016
+#filtered for_impeachment column for "YES" and p16winningparty by "R".
 ```
 
 
@@ -63,7 +59,7 @@ impeach %>%
   filter(for_impeachment == "YES",
          p16winningparty == "R",
          p12winningparty == "R")
-#filtered impeach by those who said no to impeaching trump and states who voted trump in 2016 and romney in 2012
+#filtered impeach by those who said no to impeaching trump and states who voted trump in 2016 and Romney in 2012
 ```
 
 
@@ -74,7 +70,7 @@ impeach %>%
   filter(for_impeachment == "YES",
          year(date_exact) == 2019,
          month(date_approx_month) == 9)
-#filtered impeach for those who voted yes for impeaching trump during the date Semptember 2019 by sorting for the year 2019 and the month September
+#filtered for_impeachment for only "YES" results for impeaching trump in September 2019 by sorting for the year 2019 and the month September
 ```
 
 
@@ -86,7 +82,7 @@ impeach %>%
   filter(for_impeachment == "YES",
          p16winningparty == "D",
          clinton_percent > 70 )
-#filtering for yes vote to impeach and voted for Clinton %
+#filtering for yes vote to impeach and voted for Clinton more than 70%.
 ```
 
 
@@ -133,7 +129,7 @@ impeach %>%
 impeach %>% 
   filter(for_impeachment == "NO") %>% 
   filter(state == "NJ")
-#filtered for members of congress from New Jersey who voted no to impeachment
+#filtered for members of congress from New Jersey who voted no to impeachment by limiting for_impeachment to "NO" results corresponding to the state of New Jersey.
 ```
 
 
@@ -146,7 +142,7 @@ impeach %>%
          year(date_exact) == 2017,
          ) %>%
   arrange(clinton_percent>trump_percent)
-#filtered for members of congress who voted yes to impeachment in 2017
+#filtered for_impeachment for "YES" results corresponding to the date 2017 arranged to those who voted for Clinton agaisnt Trump.
 ```
 
 
@@ -160,6 +156,6 @@ impeach %>%
   filter(gdp_above_national == "BELOW",
          for_impeachment == "NO") %>% 
   nrow()
-#I got 19 by filtering impeach by gdp above national below the average and sorting for only those who said no to impeaching trump
+#I got 19 by filtering gdp_above_national column to only "BELOW" and sorting for "no" to impeaching trump in for_impeachment column.
 
 ```
