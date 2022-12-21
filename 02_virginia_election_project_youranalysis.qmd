@@ -1,0 +1,116 @@
+---
+title: "Virginia Election Project"
+author: "putyournamehere"
+execute:
+  echo: true
+format:
+  html:
+    self-contained: true
+    code-tools: true
+---
+
+
+```{r setup, include=FALSE, warning=FALSE, message=FALSE}
+
+library(tidyverse)
+library(janitor)
+library(httr)
+library(jsonlite)
+library(kableExtra)
+library(here)
+options(scipen = 999)
+options(stringsAsFactors = FALSE)
+
+#load saved joined data file from previous script
+joined_vacomparison <- readRDS(here("processed_data", "joined_vacomparison.rds"))
+
+```
+
+
+# Comparing Virgnia Gov vs. Prez
+
+```{r}
+
+head(joined_vacomparison)
+
+```
+
+Include code to a new column to the dataset calculating the difference between the percentage of the vote Youngkin received and what Trump received.
+```{r}
+
+youngkinvstrump <- (joined_vacomparison) %>%
+  group_by(trump_pct, pct_youngkin)
+
+head(youngkinvstrump)
+
+pct_diff_YT <- youngkinvstrump %>%
+  group_by(trump_pct, pct_youngkin) %>%
+  summarise(votemargin=pct_youngkin-trump_pct)
+
+joined_vacomparison<- cbind(joined_vacomparison, pct_diff_YT$votemargin)
+
+------------------------------------------------------------------
+senatemargins <- senate_results %>%
+  group_by(county) %>%
+  head(10) %>%
+  summarise(votemargin=pct_r_2022-pct_d_2022) %>%
+  arrange(-votemargin)
+
+senatemargins %>%
+  ggplot(aes(x = reorder(county, votemargin), y = votemargin)) +
+  geom_col(color = "#9ebcda", fill = "#9ebcda") +
+  coord_flip() +
+  scale_y_continuous(name = "Votemargin", labels = scales::comma) +
+  scale_x_discrete(name = "County") +
+  labs(title = "Trump Votes vs Republican Senators") +
+  theme_hc()
+```
+
+Use this new column to find the Top 5 counties with the highest differences between Younkin/Trump percent, and then create a well-labeled chart to visualize them.
+```{r}
+youngkincounties <- joined_vacomparison %>%
+  group_by(locality)%>%
+  arrange(-`pct_diff_YT$votemargin`)%>%
+  head(5)%>%
+  summarise(pctdifference=`pct_diff_YT$votemargin`)
+
+youngkincounties %>%
+  ggplot(aes(x = reorder(locality, pctdifference), y = pctdifference)) +
+  geom_col(color = "#9ebcda", fill = "#9ebcda") +
+  coord_flip() +
+  scale_y_continuous(name = "PCT Difference", labels = scales::comma) +
+  scale_x_discrete(name = "Top 5 Counties") +
+  labs(title = "Vote Percentage Difference Between Youngkin & Trump") +
+  theme_hc()
+
+```
+
+Create a chart that shows the Top 5 counties based on where Youngkin got the highest percentage of the vote
+```{r}
+
+
+prez_2020 <- prez_2020 %>% 
+  mutate(
+    biden_pct = janitor::round_half_up(biden / total_votes_2021_prez * 100, 2),
+    trump_pct = janitor::round_half_up(trump / total_votes_2021_prez * 100, 2)
+  )
+
+head(prez_2020)
+
+youngkinwins <- joined_vacomparison %>%
+  group_by(locality) %>%
+  arrange(-`pct_diff_YT$votemargin`)%>%
+  head(5)%>%
+  summarise(highmargin=`pct_diff_YT$votemargin`)
+
+youngkinwins %>%
+  ggplot(aes(x = reorder(locality, highmargin), y = highmargin)) +
+  geom_col(color = "#9ebcda", fill = "#9ebcda") +
+  coord_flip() +
+  scale_y_continuous(name = "PCT Difference", labels = scales::comma) +
+  scale_x_discrete(name = "Counties") +
+  labs(title = "Vote Percentage Difference Between YOungkin & Trump") +
+  theme_hc()
+
+```
+
