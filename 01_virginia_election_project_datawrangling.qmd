@@ -12,7 +12,6 @@ format:
 
 ```{r setup, include=FALSE, warning=FALSE, message=FALSE}
 
-
 library(tidyverse)
 library(janitor)
 library(httr)

@@ -1,0 +1,31 @@
+---
+author: "Joshua K. De La Torre"
+execute:
+  echo: true
+format:
+  html:
+    self-contained: true
+    code-tools: true
+---
+
+Introduction: This Code Walkthrough will use the joined_vacomparison dataset to analyze the electoral performance of presidential and gubernatorial candidates during the national elections. This walkthrough will be a step by step guide into the process of using datasets as potential sources for stories. This includes a comparison of total votes between candidates, % difference of votes, as well as steps to visualize them into tables and charts.
+
+```{r}
+library(tidyverse)
+library(janitor)
+library(readxl) 
+library(scales)
+library(lubridate)
+library(httr)
+library(jsonlite)
+library(kableExtra)
+library(here)
+options(scipen = 999)
+options(stringsAsFactors = FALSE)
+
+#Load libraries
+ 
+#load saved joined data file from previous script
+joined_vacomparison <- readRDS(here("processed_data", "joined_vacomparison.rds"))
+
+```
