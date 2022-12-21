@@ -96,6 +96,15 @@ joined_vacomparison<- cbind(joined_vacomparison, pct_diff_YT$votemargin)
 Use this new column to find the Top 5 counties with the highest differences between Younkin/Trump percent, and then create a well-labeled chart to visualize them.
 
 ```{r}
+
+#created new data set from joined_vacomparison that groups the data by locality but arranges them in order to show the 5 counties with biggest % difference in votes between Trump and Youngkin
+#added - inside arrange() function to order votemargin with the highest values on top
+#summarised votemargin into column called pctdifference for y value
+#next set of code creates a chart from the youngkincounties data set created above with locality as x and pctdifference as y. Locality is x value because it is the column by which the performance of the candidates are being assessed
+#x is reordered to order the idsplayed bars in the plot to go from the highest vote margin first and then descending order for a better visual analysis.
+#coordflip changes the orientation of the chart, with no effects on the actual data displayed.
+#next lines of code add x and y labels and a title for the chart, as well as theme_classic to add other simple visual touches to it
+
 youngkincounties <- joined_vacomparison %>%
   group_by(locality)%>%
   arrange(-`pct_diff_YT$votemargin`)%>%
@@ -116,14 +125,20 @@ youngkincounties %>%
 Create a chart that shows the Top 5 counties based on where Youngkin got the highest percentage of the vote
 
 ```{r}
+#reloaded joined_vacomparison for a clear version of the file
+#created new data set called youngkinwins that groups the other columns by the youngkin and trump columns and the localities using the group_by function. the data set arranged the youngkin and trump columns by the highest numeric value by adding a subtraction sign in from to order column from hieghest to lowest
+#used summarise to create new column that adds combines the two grouped columns
+#used head() to display only the top 5 results
+#created new data set that uses mutate and janitor to calculate percentage of votes youngkin recieved comapred to trump
+#created a chart to visualize results using the same process from the previous chart
 
 joined_vacomparison <- readRDS(here("processed_data", "joined_vacomparison.rds"))
 
 youngkinwins <- joined_vacomparison %>%
-  group_by(youngkin, trump) %>%
-  arrange(-joined_vacomparison$youngkin+joined_vacomparison$trump)%>%
-  head(5)%>%
-  summarise(pcthigh=joined_vacomparison$youngkin+joined_vacomparison$trump)
+  group_by(locality, youngkin, trump) %>%
+  arrange(-youngkin+trump)%>%
+  summarise(pcthigh=youngkin+trump) %>%
+  head(5)
 
 youngkinhigh <- youngkinwins %>%
   mutate(
@@ -132,12 +147,12 @@ youngkinhigh <- youngkinwins %>%
   head(5)
 
 youngkinhigh %>%
-  ggplot(aes(x = reorder(youngkin, pcthigh), y = pcthigh)) +
+  ggplot(aes(x = reorder(locality, pcthigh), y = pcthigh)) +
   geom_col(color = "#9ebcda", fill = "#9ebcda") +
   coord_flip() +
   scale_y_continuous(name = "Vote %", labels = scales::comma) +
   scale_x_discrete(name = "Counties") +
-  labs(title = "Top Youngkin Counties") +
+  labs(title = "Top 5 Counties for Youngkin vs Trump") +
   theme_classic()
 
 ```
@@ -145,6 +160,11 @@ youngkinhigh %>%
 Create a table that shows the Top 5 counties based on where McCauliffe got the highest percentage of the vote
 
 ```{r}
+#loaded fresh version of original dataset
+#created new dataset grouped around the columns for % of votes mcauliffe and trump got
+#from this I created another dataset summarises the two columns into a new column called votemargin
+#I then used cbind to merge the votemargin column from this data set and put it into the old dataset
+
 joined_vacomparison <- readRDS(here("processed_data", "joined_vacomparison.rds"))
 
 McCauliffvstrump <- (joined_vacomparison) %>%
@@ -158,15 +178,23 @@ pct_diff_MCT <- McCauliffvstrump %>%
 
 joined_vacomparison<- cbind(joined_vacomparison, pct_diff_MCT$votemargin)
 
+#I then used this version of the data set to create yet another dataset, this time grouping #the entries around the locality column and arranging the votemargin column in order of #highest to lowest (by adding a minus sign to reverse the order the values are displayed) then used head() to cut off the output to only show the top 5
+#I used summarise to create a new column using the above output which I then used to mutate a new data set that divides the % of votes columns for both mcauliffe and trump by the % difference multiplied by 100. I then used head to only show the top 5 results
+#created a graph using the process I previously outlined
 
 McCauliffecounties <- joined_vacomparison %>%
-  group_by(locality)%>%
+  group_by(pct_mcauliffe, trump_pct)%>%
   arrange(-pct_diff_MCT$votemargin)%>%
-  head(5)%>%
-  summarise(pctdifference=pct_diff_MCT$votemargin)
+  summarise(pctdifference=pct_diff_MCT$votemargin) %>%
+  head(5)
 
-McCauliffecounties %>%
-  ggplot(aes(x = reorder(locality, pctdifference), y = pctdifference)) +
+McCauliffecounties2 <- McCauliffecounties %>%
+  mutate(pct_mcauliffe = janitor::round_half_up(pct_mcauliffe / pctdifference * 100, 2), trump_pct = janitor::round_half_up(trump_pct/ pctdifference *100, 2)
+  ) %>%
+  head(5)
+
+McCauliffecounties2 %>%
+  ggplot(aes(x = reorder(pct_mcauliffe, pctdifference), y = pctdifference)) +
   geom_col(color = "#9ebcda", fill = "#9ebcda") +
   coord_flip() +
   scale_y_continuous(name = "PCT Difference", labels = scales::comma) +
@@ -179,37 +207,50 @@ McCauliffecounties %>%
 Based on your own analysis, explain a finding of your choosing, include a narrative explaining it to the audience and then create either a chart or table displaying it.
 
 ```{r}
+#loaded fresh data set to create new data set grouped around the percentage of votes mcauliffe and youngkin recieved as well as the localities column to show where the votes came from
+#used head to display only 5 results
+#used summarise to create new column subtracting percentage of votes mcauliffe recieved with youngkin to create a breakdown of how much of the votes each candidate recieved in the tope 5 counties compared to each other
+#used head() to inspect new dataset
+#created another dataset that groups by percentage of votes for mcauliffe and youngkin and locality together
+
 joined_vacomparison <- readRDS(here("processed_data", "joined_vacomparison.rds"))
 
 governorrace <- (joined_vacomparison) %>%
-  group_by(pct_mcauliffe, pct_youngkin, locality) %>%
+  group_by(locality, pct_mcauliffe, pct_youngkin) %>%
   head(5) %>%
   summarise(votemargin = pct_youngkin-pct_mcauliffe)
-
 
 head(governorrace)
 
 pct_diff_MY <- governorrace %>%
-  group_by(pct_mcauliffe, pct_youngkin, locality) %>%
+  group_by(locality, pct_mcauliffe, pct_youngkin) %>%
   summarise(votemargin=pct_youngkin-pct_mcauliffe)
 
 ```
-
 Of the top five counties with high margin of votes between candidates, three went to Youngkin who won the election. Both candidates won their respective counties with either 60-70% of the votes.
 
 Based on your own analysis, explain a second finding of your choosing, include a narrative explaining it to the audience and then create either a chart or table displaying it.
 
+
+
 ```{r}
+
+#loaded fresh dataset
+#used fresh data set to create data set grouped by the votes for youngkin and used head() to only display top 5 results
+#created new data set grouped by the votes for youngkin and mcauliffe and locality to trace where the votes came from
+#and used head() to only display top 5 results
+#to graph the results I used ggplot to graph the governors data set using youngkin's votes as the x and locality as the y
+
 joined_vacomparison <- readRDS(here("processed_data", "joined_vacomparison.rds"))
 
 governorvotes <- (joined_vacomparison) %>%
-  group_by(youngkin) %>%
+  group_by(youngkin, mcauliffe) %>%
   head(5)
 
 governors<- governorvotes %>%
   group_by(youngkin, mcauliffe)%>%
   head(5)%>%
-  summarise()
+  summarise(electionperformance = n())
 
 ggplot(governorvotes, aes(x = governors$youngkin, y = locality)) +
   geom_col()+
@@ -217,23 +258,52 @@ ggplot(governorvotes, aes(x = governors$youngkin, y = locality)) +
 
 ```
 
-These Graphs visualize the support both candidates receieved in the conties with most votes. Youngkin had a huge lead in Amelia and Alleghany with moderate support from Alexandria and Albemarble. While McCauliffe still dominated Alexandria and Albemarble, he had even fewer support in Amelia and Alleghany. Youngkin would do well even in counties he lost, whole McCauliffe barely registers in counties he lost. Patterns like these likely led to Youngkin's election win.
+```{r}
+#created another graph this time for mcauliffe
+
+ggplot(governorvotes, aes(x = governors$mcauliffe, y = locality)) +
+  geom_col()+
+  scale_fill_manual(values = c("#468189", "#9DBEBB"))
+```
+These Graphs visualize the support both candidates receieved in the counties with most votes. Youngkin had a huge lead in Amelia and Alleghany with moderate support from Alexandria and Albemarble. While McCauliffe still dominated Alexandria and Albemarble, he had even fewer support in Amelia and Alleghany. Youngkin would do well even in counties he lost, whole McCauliffe barely registers in counties he lost. Patterns like these likely led to Youngkin's election win.
+
 
 ```{r}
-ggplot(governorvotes, aes(x = governorvotes$locality, y = governorvotes$mcauliffe)) +
+#used code from above to compare biden's vote percentage in these counties compared to trump
+
+ggplot(governorvotes, aes(x = governorvotes$biden_pct, y = governorvotes$locality)) +
+  geom_col()+
+  coord_flip()+
+  scale_fill_manual(values = c("#468189", "#9DBEBB"))
+```
+```{r}
+ggplot(governorvotes, aes(x = governorvotes$trump_pct, y = governorvotes$locality)) +
   geom_col()+
   coord_flip()+
   scale_fill_manual(values = c("#468189", "#9DBEBB"))
 ```
 
+
+
 Based on your own analysis, explain a third finding of your choosing, include a narrative explaining it to the audience and then create either a chart or table displaying it.
 
 ```{r}
+
+#loaded fresh data set to create new data set
+#that is grouped by the percentage of votes biden and trump received.
+#used head to limit entries to 10
+#repeated the above process for youngkin and mcauliffe
+#created new data set by useing merge() to combine the presz_race
+#and govs_race columns into pct_diff_elec data set. grouped this new data set by locality
+#summarised this data set by creating a column called votecount from the meant of trump's % of votes subtracted from biden's
+#used head() to inspect
+#repeated process from previous chunk but this time for the gubernatorial race
+
 joined_vacomparison <- readRDS(here("processed_data", "joined_vacomparison.rds"))
 
 presZ_race <- (joined_vacomparison) %>%
   group_by(biden_pct, trump_pct) %>%
-  head(5)
+  head(10)
 
 govs_race <- (joined_vacomparison)
 
@@ -244,19 +314,24 @@ govs_race <- (joined_vacomparison) %>%
 
 pct_diff_elec <- merge(govs_race, presZ_race) %>%
   group_by(locality) %>%
-  summarise(votecount=mean(biden_pct-trump_pct), mean(pct_youngkin-pct_mcauliffe))
+  summarise(presidentialmargin= mean(biden_pct-trump_pct))
 
 head(pct_diff_elec)
 
+pct_diff_elec2 <- merge(govs_race, presZ_race) %>%
+  group_by(locality) %>%
+  summarise(gubernatorialmargin = mean(pct_youngkin-pct_mcauliffe))
+head(pct_diff_elec2)
 ```
-
 In this table is the mean difference or gap of votes between presidential and gubernatorial candidates. The difference in votes seems to be slightly higher in the gubenatorial race compared to the presidential race.
 
+
 ```{r}
-pct_diff_elec %>%
-  ggplot(aes(x= reorder(locality, votecount), y = votecount ))+
+#creates graph from pct_diff_elec dataset
+
+pct_diff_elec2 %>%
+  ggplot(aes(x= reorder(locality, gubernatorialmargin), y = gubernatorialmargin))+
   geom_col(color = "#9ebcda", fill = "#9ebcda")+
-  coord_flip()+
   scale_y_continuous(name = "Votecount", labels = scales::comma) +
   scale_x_discrete(name = "County") +
   labs(title = "Mean Total votes between Governor and Presidential Candidates in Virginia", 
