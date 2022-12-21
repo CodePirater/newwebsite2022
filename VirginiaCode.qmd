@@ -24,7 +24,7 @@ library(kableExtra)
 library(here)
 options(scipen = 999)
 options(stringsAsFactors = FALSE)
- 
+library(DT)
 
 #load saved joined data file from previous script
 joined_vacomparison <- readRDS(here("processed_data", "joined_vacomparison.rds"))
@@ -36,8 +36,34 @@ joined_vacomparison <- readRDS(here("processed_data", "joined_vacomparison.rds")
 ```{r}
 
 head(joined_vacomparison)
-
+DT::datatable(joined_vacomparison, 
+              rownames = FALSE, 
+              filter = "top"# <--- NEW STUFF HERE
+              )
+joined_vacomparison <- joined_vacomparison %>% 
+  mutate(
+    locality = as_factor(locality),
+    trump = as.factor(trump)
+  )
 ```
+
+```{r}
+
+VirginiaAnalysisTable <- DT::datatable(joined_vacomparison, 
+              rownames = FALSE, 
+              filter = "top", 
+              extensions = 'Buttons', 
+              options = list(   # <--- NEW STUFF STARTS HERE
+                dom = 'Bfrtip',
+                buttons = c('copy', 'csv', "excel")
+              )) %>%
+  DT::formatStyle('locality',  color = 'blue', fontWeight = 'bold')
+
+# ... then just run this simple bit of code to export to html
+DT::saveWidget(VirginiaAnalysisTable, "VirginiaAnalysisTable")
+```
+
+
 
 Include code to a new column to the dataset calculating the difference between the percentage of the vote Youngkin received and what Trump received.
 
@@ -210,7 +236,7 @@ head(pct_diff_elec)
 
 ```
 
-In This table is the mean difference or gap of votes between presidential and gubernatorial candidates. The difference in votes seems to be slightly higher in the gubenatorial race compared to the presidential race.
+In this table is the mean difference or gap of votes between presidential and gubernatorial candidates. The difference in votes seems to be slightly higher in the gubenatorial race compared to the presidential race.
 
 ```{r}
 pct_diff_elec %>%

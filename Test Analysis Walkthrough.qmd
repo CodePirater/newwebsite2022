@@ -13,8 +13,8 @@ First we'll load our libraries
 ```{r}
 library(tidyverse)
 library(lubridate)
+library(DT)
 ```
-
 
 ```{r}
 # run this line below load the data for this assignment
@@ -24,6 +24,33 @@ impeach <- read_csv("https://docs.google.com/spreadsheets/d/e/2PACX-1vRh8d5JaDqB
 # and whether they supported impeachment along with when they announced such support
 
 view(impeach)
+DT::datatable(impeach, 
+              rownames = FALSE, 
+              filter = "top"# <--- NEW STUFF HERE
+              )
+```
+
+```{r}
+impeach <- impeach %>% 
+  mutate(
+    for_impeachment = as_factor(for_impeachment),
+    p16winningparty = as.factor(p16winningparty)
+  )
+
+TestAnalysisTable <- DT::datatable(impeach, 
+              rownames = FALSE, 
+              filter = "top", 
+              extensions = 'Buttons', 
+              options = list(   # <--- NEW STUFF STARTS HERE
+                dom = 'Bfrtip',
+                buttons = c('copy', 'csv', "excel")
+              )) %>%
+  DT::formatStyle('for_impeachment',  color = 'red', fontWeight = 'bold')
+
+
+# ... then just run this simple bit of code to export to html
+DT::saveWidget(TestAnalysisTable, "TestAnalysisTable.html")
+
 ```
 
 
