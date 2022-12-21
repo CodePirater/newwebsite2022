@@ -31,6 +31,11 @@ DT::datatable(impeach,
 ```
 
 ```{r}
+#This creates an interactive version of the impeach data table using the DT package.
+#The code below adds the buttons and other interactive elements as well as telling the system which column to highlight.
+#Adding in the filter also lets the system know that you want to be able to sort the table.
+#creating the TestAnalysisTable allows us to export the a web page version of the table
+
 impeach <- impeach %>% 
   mutate(
     for_impeachment = as_factor(for_impeachment),
@@ -62,7 +67,8 @@ impeach %>%
   filter(for_impeachment == "NO") %>%
   summarise(for_impeachment)
 
-#filtered impeach by filtering for_impeachment column for results that only showed "No"
+#filtered impeach by using the filter function to display only "NO" results from the  for_impeachment column.
+#Used summarise to only display the for_impeachment column and hide the other columns
 ```
 
 
@@ -72,8 +78,11 @@ impeach %>%
 
 impeach %>% 
   filter(for_impeachment == "YES",
-         p16winningparty == "R")
-#filtered for_impeachment column for "YES" and p16winningparty by "R".
+         p16winningparty == "R") %>%
+  summarise(for_impeachment, p16winningparty)
+
+#filtered for_impeachment column to show only "YES" entries and the p16winningparty to show only "R".
+#used summarise to show only the relevant columns
 ```
 
 
@@ -85,8 +94,12 @@ impeach %>%
 impeach %>% 
   filter(for_impeachment == "YES",
          p16winningparty == "R",
-         p12winningparty == "R")
+         p12winningparty == "R")%>%
+  summarise(for_impeachment, p16winningparty, p12winningparty)
+
+#Used similar steps from previous question, but added additional filter for p12winningparty to tell the system to also sort for "R" results from that column
 #filtered impeach by those who said no to impeaching trump and states who voted trump in 2016 and Romney in 2012
+#used summarise to show only the relevant columns
 ```
 
 
@@ -97,7 +110,8 @@ impeach %>%
   filter(for_impeachment == "YES",
          year(date_exact) == 2019,
          month(date_approx_month) == 9)
-#filtered for_impeachment for only "YES" results for impeaching trump in September 2019 by sorting for the year 2019 and the month September
+#filtered impeach dataset so that for_impeachment only displays "YES" results from September 2019.
+#filtered date exact so that the only "YES" results that are displayed are those that match the numeric 2019 and numeric 9 in the date_exact and date_approx_month columns respectively.
 ```
 
 
@@ -108,8 +122,10 @@ impeach %>%
 impeach %>% 
   filter(for_impeachment == "YES",
          p16winningparty == "D",
-         clinton_percent > 70 )
-#filtering for yes vote to impeach and voted for Clinton more than 70%.
+         clinton_percent > 70 )%>%
+  summarise(for_impeachment, p16winningparty, clinton_percent)
+#similar steps as previous chunks. removed date exact and date approx and now filtering impeach for "yes" results in for_impeachment and "D" in p16winningwarty. Added a filter using > for an additional filter to only show "YES" and "D" results that also have clinton winning more than 70% of the vote.
+#added summarise to clean up the table and only display the relevant columns
 ```
 
 
@@ -118,9 +134,13 @@ impeach %>%
 # bachelor's degree or higher ("pct_bachelors"), from lowest to highest
 
 impeach %>% 
-  arrange(pct_bachelors)
+  arrange(pct_bachelors) %>%
+  summarise(pct_bachelors)
 
-#sorted data frame by putting pct_bachelors inside arrange
+#used arrange() on the pct_bachelors column inside the impeach dataset
+#arrange () reorders the column from the lowest numeric value to the highest
+#added summarise to only display pct_bachelors
+
 ```
 
 
@@ -130,9 +150,10 @@ impeach %>%
 
 impeach %>% 
   filter(for_impeachment == "NO") %>% 
-  arrange(pct_bachelors)
+  arrange(pct_bachelors) %>%
+  summarise(for_impeachment, pct_bachelors)
 
-#filtered by no vote on impeach and arranged pct_bachelors by lowest to highest
+#filtered impeach to sort by "NO" on for impeachment column and to arrange those results based on their corresponding percentage with a bachelor's degree
 ```
 
 
@@ -145,8 +166,12 @@ impeach %>%
 impeach %>% 
   filter(for_impeachment == "NO") %>% 
   arrange(pct_bachelors) %>% 
-  filter(pct_bachelors_compared_to_national == "BELOW" )
-#filtered by no vote on impeach and arranged pct_bachelors by lowest to highest then filtered againt for bachelors degrees lower than national average
+  filter(pct_bachelors_compared_to_national == "BELOW")%>%
+  summarise(for_impeachment, pct_bachelors_compared_to_national, pct_bachelors)
+
+#filtered by no vote on impeach and arranged pct_bachelors by lowest to highest
+#added additional filter for "BELOW" results under pct_bachelors_compared_to_national
+#added summarise to display relevant columsn
 ```
 
 
@@ -156,7 +181,7 @@ impeach %>%
 impeach %>% 
   filter(for_impeachment == "NO") %>% 
   filter(state == "NJ")
-#filtered for members of congress from New Jersey who voted no to impeachment by limiting for_impeachment to "NO" results corresponding to the state of New Jersey.
+#filtered for members of congress from New Jersey who voted no to impeachment by limiting for_impeachment to "NO" results and created another filter for the state column to include only NJ results
 ```
 
 
@@ -169,7 +194,7 @@ impeach %>%
          year(date_exact) == 2017,
          ) %>%
   arrange(clinton_percent>trump_percent)
-#filtered for_impeachment for "YES" results corresponding to the date 2017 arranged to those who voted for Clinton agaisnt Trump.
+#filtered for_impeachment for "YES" results corresponding with numeric value 2017 in the date_exact column arranged in order of high Clinton percentage vote agaisnt Trump.
 ```
 
 
@@ -184,5 +209,6 @@ impeach %>%
          for_impeachment == "NO") %>% 
   nrow()
 #I got 19 by filtering gdp_above_national column to only "BELOW" and sorting for "no" to impeaching trump in for_impeachment column.
+#used nrow() to calculate number of columns in the matrix
 
 ```

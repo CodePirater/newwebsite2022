@@ -1,5 +1,5 @@
 ---
-title: "Virginia Election Project"
+title: "Virginia Code Walkthrough"
 author: "Joshua K. De La Torre"
 format:
   html:
@@ -35,7 +35,13 @@ joined_vacomparison <- readRDS(here("processed_data", "joined_vacomparison.rds")
 
 ```{r}
 
+#used head to display top results inside the data set for inspection
 head(joined_vacomparison)
+
+#Next lines of code create an interactive version of the joined_vacomparison data table using the DT package.
+#The code below adds the buttons and other interactive elements as well as telling the system which column to highlight.
+#Adding in the filter also lets the system know that you want to be able to sort the table.
+
 DT::datatable(joined_vacomparison, 
               rownames = FALSE, 
               filter = "top"# <--- NEW STUFF HERE
@@ -48,7 +54,8 @@ joined_vacomparison <- joined_vacomparison %>%
 ```
 
 ```{r}
-
+#continues process described in previous chunk. split for better comprehension
+#creating the TestAnalysisTable allows us to export the a web page version of the table
 VirginiaAnalysisTable <- DT::datatable(joined_vacomparison, 
               rownames = FALSE, 
               filter = "top", 
@@ -68,6 +75,11 @@ DT::saveWidget(VirginiaAnalysisTable, "VirginiaAnalysisTable")
 Include code to a new column to the dataset calculating the difference between the percentage of the vote Youngkin received and what Trump received.
 
 ```{r}
+#created youngkinvstrump from joined_vacomparison. used group_by to put trump_pct and pct_youngkin into separate buckets by which all other data is grouped into
+#used head() to inspect results
+#created new data table from youngkinvstrump that adds a filter that subtracts the % votes trump received from youngkin's votes to compare the gap in votes and see who performed better in the election. this is under the new votemargin that is summarised to show only the three relevant columns
+#used cbind to copy the votemargin column from pct_diff_YT into the original data set
+
 
 youngkinvstrump <- (joined_vacomparison) %>%
   group_by(trump_pct, pct_youngkin)
@@ -104,6 +116,8 @@ youngkincounties %>%
 Create a chart that shows the Top 5 counties based on where Youngkin got the highest percentage of the vote
 
 ```{r}
+
+joined_vacomparison <- readRDS(here("processed_data", "joined_vacomparison.rds"))
 
 youngkinwins <- joined_vacomparison %>%
   group_by(youngkin, trump) %>%
