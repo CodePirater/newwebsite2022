@@ -11,6 +11,7 @@ website:
       - portfolio.qmd
       - Test Analysis Walkthrough.qmd
       - Migrant Article Text.qmd
+      - 02_virginia_election_project_youranalysis.qmd
   page-footer: 
     left: "Copyright 2022, Joshua De La Torre" 
     right: 
